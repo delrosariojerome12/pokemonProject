@@ -6,7 +6,7 @@ const Pokedex = React.memo(() => {
       <header className="pokedex-header"></header>
       <div className="search-container"></div>
       <div className="filter-container"></div>
-      <div className="middle"></div>
+      <div className="middle">hatdog</div>
       <div className="side"></div>
     </section>
   );
