@@ -175,7 +175,7 @@ button {
 .pokedex-container {
   display: grid;
   grid-template-rows: 5vh 8vh 6vh 74vh;
-  grid-template-columns: 40rem 1fr;
+  grid-template-columns: 35rem 1fr;
   gap: 1rem;
 }
 .pokedex-container > * {
@@ -207,4 +207,21 @@ button {
   grid-column: 2/3;
   overflow-y: auto;
   padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(auto, 20rem));
+  gap: 1rem;
+}
+.pokedex-container .middle .pokemon-card {
+  border-radius: 1rem;
+  padding: 1rem;
+  height: 17rem;
+  border: solid 1px #ccc;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+.pokedex-container .middle .pokemon-card p {
+  text-transform: capitalize;
+}
+.pokedex-container .middle .pokemon-card:hover {
+  background-color: #ffb42a;
 }/*# sourceMappingURL=main.css.map */

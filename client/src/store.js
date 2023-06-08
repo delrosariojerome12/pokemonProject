@@ -1,5 +1,5 @@
 import {configureStore} from "@reduxjs/toolkit";
-
+import pokedexReducer from "./features/pokedexReducer";
 export const store = configureStore({
-  reducer: {},
+  reducer: {pokedex: pokedexReducer},
 });
