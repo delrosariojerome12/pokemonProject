@@ -30,7 +30,6 @@ export const pokedexReducer = createSlice({
   initialState,
   reducers: {
     handleSelectPokemon: (state, action) => {
-      console.log(action.payload);
       state.selectedPokemon = action.payload;
     },
   },
