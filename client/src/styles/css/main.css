@@ -171,7 +171,7 @@ button {
 .pokedex-container {
   display: grid;
   grid-template-rows: 5vh 8vh 6vh 74vh;
-  grid-template-columns: 32rem 1fr;
+  grid-template-columns: 35rem 1fr;
   gap: 1rem;
   padding: 2rem;
   background-color: rgba(234, 239, 241, 0.9921568627);
@@ -201,7 +201,11 @@ button {
   grid-column: 1/2;
   border: solid 2px #9e9e9e;
   position: relative;
-  padding: 10rem 2rem;
+  padding: 10rem 2rem 2rem 2rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
 }
 .pokedex-container .side .type-container {
   display: flex;
@@ -213,12 +217,67 @@ button {
   display: inline-block;
   color: #fff;
 }
+.pokedex-container .side .abilites-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.pokedex-container .side .abilites-container .ability-pokemon {
+  border-radius: 3rem;
+  padding: 1rem 2rem;
+  border: solid 1px #ccc;
+  font-size: 1.4rem;
+  text-align: center;
+}
+.pokedex-container .side .abilites-container .ability-pokemon .ability {
+  position: relative;
+}
+.pokedex-container .side .abilites-container .ability-pokemon .ability .hidden-ability {
+  position: absolute;
+  position: absolute;
+  padding: 1.5rem 2rem;
+  bottom: 0%;
+  left: 50%;
+  transform: translate(-50%, 100%);
+  font-size: 1.2rem;
+}
+.pokedex-container .side .physique-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  width: 100%;
+  margin-top: 2rem;
+  text-align: center;
+}
+.pokedex-container .side .physique-container .body-size {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.pokedex-container .side .physique-container .body-size p {
+  border-radius: 3rem;
+  padding: 1rem;
+  text-align: center;
+  background-color: #ccc;
+  text-transform: lowercase;
+}
 .pokedex-container .side .sprite-main {
   height: 20rem;
   position: absolute;
   top: 0%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.pokedex-container .side .pokedex-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+.pokedex-container .side .pokedex-entry p {
+  font-size: 1.4rem;
+  letter-spacing: 0.1rem;
 }
 .pokedex-container .middle {
   grid-row: 4/5;
