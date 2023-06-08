@@ -1,11 +1,16 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
+import {handleSelectPokemon} from "../../features/pokedexReducer";
+import {useDispatch, useSelector} from "react-redux";
+
 const PokedexCard = React.memo(({pokemon}) => {
-  const {name, url} = pokemon;
+  const dispatch = useDispatch();
+  const {url} = pokemon;
   const [pokemonData, setPokemonData] = useState(null);
 
   const renderTypes = () => {
     const {types} = pokemonData;
+
     return types.map((item, index) => {
       const {
         type: {name},
@@ -32,6 +37,8 @@ const PokedexCard = React.memo(({pokemon}) => {
 
   const {
     sprites: {versions},
+    id,
+    name,
   } = pokemonData;
 
   const animatedSprite = versions["generation-v"]["black-white"].animated;
@@ -39,10 +46,14 @@ const PokedexCard = React.memo(({pokemon}) => {
   const backSprite = animatedSprite.back_default;
 
   return (
-    <div className="pokemon-card">
-      <p>{name}</p>
+    <div
+      className="pokemon-card"
+      onClick={() => dispatch(handleSelectPokemon(pokemonData))}
+    >
+      <img className="sprite" src={frontSprite} alt={`${name} sprite`} />
+      <h4>{name}</h4>
       {renderTypes()}
-      <img src={frontSprite} alt={`${name} sprite`} />
+      <p>#{id}</p>
     </div>
   );
 });

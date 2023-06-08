@@ -2,6 +2,8 @@ import React, {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {getPokemonOnload} from "../features/pokedexReducer";
 import PokedexCard from "../components/Pokedex/PokedexCard";
+import SelectedPokemonBar from "../components/Pokedex/SelectedPokemonBar";
+
 const Pokedex = React.memo(() => {
   const {isLoading, isError, pokemonList} = useSelector(
     (state) => state.pokedex
@@ -39,7 +41,7 @@ const Pokedex = React.memo(() => {
       <div className="search-container"></div>
       <div className="filter-container"></div>
       <div className="middle">{renderPokemon()}</div>
-      <div className="side"></div>
+      <SelectedPokemonBar />
     </section>
   );
 });

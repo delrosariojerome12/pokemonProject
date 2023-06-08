@@ -1,6 +1,8 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
+
 const initialState = {
+  selectedPokemon: null,
   pokemonList: null,
   previousPage: null,
   currentPage: null,
@@ -26,7 +28,12 @@ export const getPokemonOnload = createAsyncThunk(
 export const pokedexReducer = createSlice({
   name: "pokedex-reducer",
   initialState,
-  reducers: {},
+  reducers: {
+    handleSelectPokemon: (state, action) => {
+      console.log(action.payload);
+      state.selectedPokemon = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getPokemonOnload.pending, (state, action) => {
@@ -45,6 +52,6 @@ export const pokedexReducer = createSlice({
   },
 });
 
-export const {} = pokedexReducer.actions;
+export const {handleSelectPokemon} = pokedexReducer.actions;
 
 export default pokedexReducer.reducer;
