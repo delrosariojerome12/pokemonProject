@@ -258,13 +258,19 @@ button {
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
-  border-radius: 100%;
   background-color: #9e9e9e;
   padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s ease-in-out;
+  border: solid 2px transparent;
+}
+.pokedex-container .side .revert-button:hover {
+  border-radius: 1rem;
+  opacity: 0.7;
 }
 .pokedex-container .side .right-button,
 .pokedex-container .side .left-button {
@@ -476,4 +482,8 @@ button {
   top: 5%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.pokedex-container .middle .selected {
+  background-color: #9e9e9e;
+  color: #fff;
 }/*# sourceMappingURL=main.css.map */

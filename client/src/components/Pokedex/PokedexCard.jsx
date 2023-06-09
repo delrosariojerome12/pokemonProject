@@ -4,6 +4,7 @@ import {handleSelectPokemon} from "../../features/pokedexReducer";
 import {useDispatch, useSelector} from "react-redux";
 
 const PokedexCard = React.memo(({pokemon}) => {
+  const {selectedPokemon} = useSelector((state) => state.pokedex);
   const dispatch = useDispatch();
   const {url} = pokemon;
   const [pokemonData, setPokemonData] = useState(null);
@@ -137,7 +138,9 @@ const PokedexCard = React.memo(({pokemon}) => {
 
   return (
     <div
-      className="pokemon-card"
+      className={
+        selectedPokemon?.id === id ? "pokemon-card selected" : "pokemon-card"
+      }
       onClick={() => dispatch(handleSelectPokemon(pokemonData))}
     >
       <p>#{id}</p>

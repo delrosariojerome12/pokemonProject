@@ -308,19 +308,15 @@ const SelectedPokemonBar = React.memo(() => {
         language: {name},
         genus,
       } = item;
-      console.log(item);
       return name === "en" && genus;
     })[0].genus;
     return genus;
   };
 
-  const x = filterGenera();
-  console.log(x);
-
   const pokedexEntry = filterDexEntries();
   const officialArt = other["official-artwork"].front_default;
 
-  console.log(moreDetails);
+  // console.log(moreDetails);
 
   return (
     <IconContext.Provider value={{className: "icon"}}>
