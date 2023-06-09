@@ -2,6 +2,9 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {debounce} from "lodash";
 import axios from "axios";
+import {FaChevronRight, FaChevronLeft} from "react-icons/fa";
+import {GrRevert} from "react-icons/gr";
+import {IconContext} from "react-icons/lib";
 
 import LoadingPokemon from "../LoadingPokemon";
 
@@ -131,107 +134,95 @@ const SelectedPokemonBar = React.memo(() => {
     });
   };
 
-  const renderPokemonTypes = (option) => {
-    return typeDetails.map((item, index) => {
+  const filterPokemonTypes = (option) => {
+    const filterDups = [];
+
+    typeDetails.map((item, index) => {
       const {
-        damage_relations: {double_damage_from, half_damage_to},
+        damage_relations: {double_damage_from, half_damage_from},
       } = item;
+      const choice = option === "weak" ? double_damage_from : half_damage_from;
 
-      const choice = option === "weak" ? double_damage_from : half_damage_to;
-
-      return choice.map((type, index) => {
+      choice.map((type, index) => {
         const {name} = type;
-        let typeColor = "";
-
-        switch (name) {
-          case "normal":
-            typeColor = "#A8A77A";
-            break;
-
-          case "fire":
-            typeColor = "#EE8130";
-            break;
-
-          case "water":
-            typeColor = "#6390F0";
-            break;
-
-          case "electric":
-            typeColor = "#F7D02C";
-            break;
-
-          case "grass":
-            typeColor = "#7AC74C";
-            break;
-
-          case "ice":
-            typeColor = "#96D9D6";
-            break;
-
-          case "fighting":
-            typeColor = "#C22E28";
-            break;
-
-          case "poison":
-            typeColor = "#A33EA1";
-            break;
-
-          case "ground":
-            typeColor = "#E2BF65";
-            break;
-
-          case "flying":
-            typeColor = "#A98FF3";
-            break;
-
-          case "psychic":
-            typeColor = "#F95587";
-            break;
-
-          case "bug":
-            typeColor = "#A6B91A";
-            break;
-
-          case "rock":
-            typeColor = "#B6A136";
-            break;
-
-          case "ghost":
-            typeColor = "#735797";
-            break;
-
-          case "dragon":
-            typeColor = "#6F35FC";
-            break;
-
-          case "dark":
-            typeColor = "#705746";
-            break;
-
-          case "steel":
-            typeColor = "#B7B7CE";
-            break;
-
-          case "fairy":
-            typeColor = "#D685AD";
-            break;
-
-          default:
-            break;
-        }
-
-        if (typeColor) {
-          return (
-            <div
-              className="type-pokemon"
-              style={{background: typeColor, textTransform: "uppercase"}}
-              key={index}
-            >
-              <p>{name}</p>
-            </div>
-          );
-        }
+        filterDups.push(name);
       });
+    });
+    return [...new Set(filterDups)];
+  };
+
+  const renderPokemonTypes = (option) => {
+    return filterPokemonTypes(option).map((item, index) => {
+      let typeColor = "";
+      switch (item) {
+        case "normal":
+          typeColor = "#A8A77A";
+          break;
+        case "fire":
+          typeColor = "#EE8130";
+          break;
+        case "water":
+          typeColor = "#6390F0";
+          break;
+        case "electric":
+          typeColor = "#F7D02C";
+          break;
+        case "grass":
+          typeColor = "#7AC74C";
+          break;
+        case "ice":
+          typeColor = "#96D9D6";
+          break;
+        case "fighting":
+          typeColor = "#C22E28";
+          break;
+        case "poison":
+          typeColor = "#A33EA1";
+          break;
+        case "ground":
+          typeColor = "#E2BF65";
+          break;
+        case "flying":
+          typeColor = "#A98FF3";
+          break;
+        case "psychic":
+          typeColor = "#F95587";
+          break;
+        case "bug":
+          typeColor = "#A6B91A";
+          break;
+        case "rock":
+          typeColor = "#B6A136";
+          break;
+        case "ghost":
+          typeColor = "#735797";
+          break;
+        case "dragon":
+          typeColor = "#6F35FC";
+          break;
+        case "dark":
+          typeColor = "#705746";
+          break;
+        case "steel":
+          typeColor = "#B7B7CE";
+          break;
+        case "fairy":
+          typeColor = "#D685AD";
+          break;
+        default:
+          break;
+      }
+      if (typeColor) {
+        return (
+          <div
+            className="type-pokemon"
+            style={{background: typeColor, textTransform: "uppercase"}}
+            key={index}
+          >
+            <p>{item}</p>
+          </div>
+        );
+      }
     });
   };
 
@@ -277,7 +268,6 @@ const SelectedPokemonBar = React.memo(() => {
   if (!selectedPokemon || !moreDetails || !typeDetails) {
     return (
       <div className="side">
-        {/* <h3>Loading...</h3> */}
         <LoadingPokemon />
       </div>
     );
@@ -285,11 +275,11 @@ const SelectedPokemonBar = React.memo(() => {
   if (moreDetails.name !== selectedPokemon.name) {
     return (
       <div className="side">
-        {/* <h3>Loading...</h3> */}
         <LoadingPokemon />
       </div>
     );
   }
+
   const {
     name,
     sprites: {other},
@@ -300,10 +290,7 @@ const SelectedPokemonBar = React.memo(() => {
     types,
   } = selectedPokemon;
 
-  // console.log(moreDetails);
-  // console.log(selectedPokemon);
-  console.log(typeDetails);
-  const {flavor_text_entries} = moreDetails;
+  const {flavor_text_entries, genera} = moreDetails;
 
   const filterDexEntries = () => {
     const dex = flavor_text_entries.filter((item, index) => {
@@ -315,49 +302,78 @@ const SelectedPokemonBar = React.memo(() => {
     return dex[dex.length - 1].flavor_text;
   };
 
-  const pokedexEntry = filterDexEntries();
+  const filterGenera = () => {
+    const genus = genera.filter((item, index) => {
+      const {
+        language: {name},
+        genus,
+      } = item;
+      console.log(item);
+      return name === "en" && genus;
+    })[0].genus;
+    return genus;
+  };
 
+  const x = filterGenera();
+  console.log(x);
+
+  const pokedexEntry = filterDexEntries();
   const officialArt = other["official-artwork"].front_default;
 
+  console.log(moreDetails);
+
   return (
-    <div className="side">
-      <img className="sprite-main" src={officialArt} alt={`${name}-sprite`} />
-      <p>#{id}</p>
-      <h4>{name}</h4>
-      <div className="type-container">{renderTypes(types)}</div>
-      <div className="pokedex-entry">
-        <h4>Pokédex</h4>
-        <p>{pokedexEntry}</p>
-      </div>
-      <div className="abilites-container">{renderAbilites()}</div>
-      <div className="physique-container">
-        <div className="body-size">
-          <h4>Height</h4>
-          <p>{height}m</p>
+    <IconContext.Provider value={{className: "icon"}}>
+      <div className="side">
+        <img className="sprite-main" src={officialArt} alt={`${name}-sprite`} />
+        <p>#{id}</p>
+        <h4>{name}</h4>
+        <p style={{color: "#6e6e6e"}}>{filterGenera()}</p>
+        <div className="type-container">{renderTypes(types)}</div>
+        <div className="pokedex-entry">
+          <h4>Pokédex</h4>
+          <p>{pokedexEntry}</p>
         </div>
-        <div className="body-size">
-          <h4>Weight</h4>
-          <p>{weight}kg</p>
+        <div className="abilites-container">{renderAbilites()}</div>
+        <div className="physique-container">
+          <div className="body-size">
+            <h4>Height</h4>
+            <p>{height}m</p>
+          </div>
+          <div className="body-size">
+            <h4>Weight</h4>
+            <p>{weight}kg</p>
+          </div>
         </div>
-      </div>
-      <div className="base-exp">
-        <h4>Base Exp</h4>
-        <p>{base_experience}</p>
-      </div>
+        <div className="base-exp">
+          <h4>Base Exp</h4>
+          <p>{base_experience}</p>
+        </div>
 
-      <div className="weakness-container">
-        <h4>Weaknesses</h4>
-        <div className="weakness-types">{renderPokemonTypes("weak")}</div>
-      </div>
-      <div className="resistence-container">
-        <h4>Resistances</h4>
-        <div className="weakness-types">{renderPokemonTypes("strength")}</div>
-      </div>
+        <div className="weakness-container">
+          <h4>Weaknesses</h4>
+          <div className="weakness-types">{renderPokemonTypes("weak")}</div>
+        </div>
+        <div className="resistence-container">
+          <h4>Resistances</h4>
+          <div className="weakness-types">{renderPokemonTypes("strength")}</div>
+        </div>
 
-      <div className="stats-container"></div>
+        <span className="right-button">
+          <FaChevronRight />
+        </span>
+        <span className="left-button">
+          <FaChevronLeft />
+        </span>
+        <span className="revert-button">
+          <GrRevert />
+        </span>
+
+        {/* <div className="stats-container"></div>
       <div className="evolution-container"></div>
-      <div className="control-container"></div>
-    </div>
+      <div className="control-container"></div> */}
+      </div>
+    </IconContext.Provider>
   );
 });
 
