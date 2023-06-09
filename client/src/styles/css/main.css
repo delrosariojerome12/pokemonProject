@@ -431,7 +431,7 @@ button {
   grid-row: 4/5;
   grid-column: 2/3;
   overflow-y: auto;
-  padding: 4rem 2rem 2rem 2rem;
+  padding: 4rem 1.5rem 1.5rem 1.5rem;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(auto, 23rem));
   row-gap: 4rem;

@@ -5,11 +5,16 @@ import axios from "axios";
 import {FaChevronRight, FaChevronLeft} from "react-icons/fa";
 import {GrRevert} from "react-icons/gr";
 import {IconContext} from "react-icons/lib";
-
 import LoadingPokemon from "../LoadingPokemon";
+import {
+  handlePreviousPokemon,
+  handleNextPokemon,
+} from "../../features/pokedexReducer";
 
 const SelectedPokemonBar = React.memo(() => {
-  const {selectedPokemon} = useSelector((state) => state.pokedex);
+  const {selectedPokemon, nextPokemon, previousPokemon} = useSelector(
+    (state) => state.pokedex
+  );
   const [moreDetails, setMoreDetails] = useState(null);
   const [typeDetails, setTypeDetails] = useState(null);
 
@@ -292,6 +297,8 @@ const SelectedPokemonBar = React.memo(() => {
 
   const {flavor_text_entries, genera} = moreDetails;
 
+  // console.log(nextPokemon, previousPokemon);
+
   const filterDexEntries = () => {
     const dex = flavor_text_entries.filter((item, index) => {
       const {
@@ -355,13 +362,29 @@ const SelectedPokemonBar = React.memo(() => {
           <div className="weakness-types">{renderPokemonTypes("strength")}</div>
         </div>
 
-        <span className="right-button">
+        <span
+          className="right-button"
+          onClick={() => {
+            dispatch(handleNextPokemon({x: ""}));
+          }}
+        >
           <FaChevronRight />
         </span>
-        <span className="left-button">
+        <span
+          className="left-button"
+          onClick={() => {
+            dispatch(handlePreviousPokemon({x: ""}));
+          }}
+        >
           <FaChevronLeft />
         </span>
-        <span className="revert-button">
+        <span
+          className="revert-button"
+          onClick={() => {
+            // dispatch(handleNextPokemon({x: ""}));
+            console.log("Testing");
+          }}
+        >
           <GrRevert />
         </span>
 
