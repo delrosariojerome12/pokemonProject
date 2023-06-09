@@ -325,16 +325,35 @@ const SelectedPokemonBar = React.memo(() => {
 
   // console.log(moreDetails);
 
+  // <div class="card-container">
+  //   <div class="card">
+  //     <div class="card-front">
+  //       <div class="card-content">Front Side</div>
+  //     </div>
+  //     <div class="card-back">
+  //       <div class="card-content">Back Side</div>
+  //     </div>
+  //   </div>
+  // </div>;
+
   return (
     <IconContext.Provider value={{className: "icon"}}>
       <div className="side">
+        {/* <div className="card">
+          <div className="card-front">
+            <div className="card-content"></div>
+          </div>
+          <div className="card-back">
+            <div className="card-content"></div>
+          </div>
+        </div> */}
         <img className="sprite-main" src={officialArt} alt={`${name}-sprite`} />
         <p>#{id}</p>
         <h4>{name}</h4>
         <p style={{color: "#6e6e6e"}}>{filterGenera()}</p>
         <div className="type-container">{renderTypes(types)}</div>
         <div className="pokedex-entry">
-          <h4>Pokédex</h4>
+          <h4>Pokédex Entry</h4>
           <p>{pokedexEntry}</p>
         </div>
         <div className="abilites-container">{renderAbilites()}</div>
