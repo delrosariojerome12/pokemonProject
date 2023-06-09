@@ -5,6 +5,7 @@
   width: 100vw;
 }
 
+@import "./components/loadingPokemon";
 @import "./pages/landing";
 @import "./pages/client";
 @import "./pages/pokedex";
