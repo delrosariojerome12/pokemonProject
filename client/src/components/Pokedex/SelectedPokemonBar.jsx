@@ -331,8 +331,10 @@ const SelectedPokemonBar = React.memo(() => {
 
   return (
     <IconContext.Provider value={{className: "icon"}}>
-      <div className="side">
-        <div className={isFlipped ? "card card-flipped" : "card"}>
+      <div className={isFlipped ? "side side-flipped" : "side"}>
+        <div className={"card"}>
+          {/* <div className={isFlipped ? "card card-flipped" : "card"}> */}
+
           <div className="card-front">
             <img
               loading="lazy"

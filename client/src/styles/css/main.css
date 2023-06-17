@@ -253,6 +253,9 @@ button {
   justify-content: center;
   flex-direction: column;
   perspective: 1000px;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  backface-visibility: hidden;
 }
 .pokedex-container .side .card {
   height: 100%;
@@ -457,6 +460,9 @@ button {
 .pokedex-container .side .pokedex-entry p {
   font-size: 1.4rem;
   letter-spacing: 0.1rem;
+}
+.pokedex-container .side-flipped {
+  transform: rotateY(180deg);
 }
 .pokedex-container .middle {
   grid-row: 4/5;

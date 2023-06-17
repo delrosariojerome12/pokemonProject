@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {getPokemonOnload} from "../features/pokedexReducer";
 import PokedexCard from "../components/Pokedex/PokedexCard";
@@ -9,6 +9,7 @@ const Pokedex = React.memo(() => {
     (state) => state.pokedex
   );
   const dispatch = useDispatch();
+  const [searchPokemon, setSearchPokemon] = useState("");
 
   const renderPokemon = () => {
     return pokemonList.map((item, index) => {
@@ -40,7 +41,15 @@ const Pokedex = React.memo(() => {
   return (
     <section className="pokedex-container">
       <header className="pokedex-header"></header>
-      <div className="search-container"></div>
+      <div className="search-container">
+        <input
+          type="text"
+          value={searchPokemon}
+          onChange={(e) => {
+            setSearchPokemon(e.target.value);
+          }}
+        />
+      </div>
       <div className="filter-container"></div>
       <div className="middle">{renderPokemon()}</div>
       <SelectedPokemonBar />
