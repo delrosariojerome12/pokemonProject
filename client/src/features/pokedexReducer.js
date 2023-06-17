@@ -16,10 +16,10 @@ export const getPokemonOnload = createAsyncThunk(
     try {
       const url = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20";
       const {data: res} = await axios.get(url);
-      console.log(res);
       return res;
     } catch (error) {
       console.log(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -51,7 +51,7 @@ export const handlePreviousPokemon = createAsyncThunk(
       return data;
     } catch (error) {
       console.log(error);
-      // rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -85,36 +85,36 @@ export const pokedexReducer = createSlice({
     // next
     builder
       .addCase(handleNextPokemon.pending, (state, action) => {
-        state.isLoading = true;
+        // state.isLoading = true;
       })
       .addCase(handleNextPokemon.fulfilled, (state, action) => {
         const {id} = action.payload;
-        state.isLoading = false;
-        state.isError = false;
+        // state.isLoading = false;
+        // state.isError = false;
         state.selectedPokemon = action.payload;
         state.nextPokemon = id + 1;
         state.previousPokemon = id === 1 ? id : id - 1;
       })
       .addCase(handleNextPokemon.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
+        // state.isLoading = false;
+        // state.isError = true;
       });
     // previousPokemon
     builder
       .addCase(handlePreviousPokemon.pending, (state, action) => {
-        state.isLoading = true;
+        // state.isLoading = true;
       })
       .addCase(handlePreviousPokemon.fulfilled, (state, action) => {
         const {id} = action.payload;
-        state.isLoading = false;
-        state.isError = false;
+        // state.isLoading = false;
+        // state.isError = false;
         state.selectedPokemon = action.payload;
         state.nextPokemon = id + 1;
         state.previousPokemon = id === 1 ? id : id - 1;
       })
       .addCase(handlePreviousPokemon.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
+        // state.isLoading = false;
+        // state.isError = true;
       });
   },
 });

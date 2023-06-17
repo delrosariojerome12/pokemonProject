@@ -20,6 +20,8 @@ const Pokedex = React.memo(() => {
     dispatch(getPokemonOnload({x: ""}));
   }, []);
 
+  // console.log(pokemonList);
+
   if (isLoading || !pokemonList) {
     return (
       <div>

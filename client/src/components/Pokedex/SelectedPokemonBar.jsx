@@ -10,6 +10,7 @@ import {
   handlePreviousPokemon,
   handleNextPokemon,
 } from "../../features/pokedexReducer";
+import {adjustTypings} from "../../utils/pokedexUtils";
 
 const SelectedPokemonBar = React.memo(() => {
   const {selectedPokemon, nextPokemon, previousPokemon} = useSelector(
@@ -17,12 +18,11 @@ const SelectedPokemonBar = React.memo(() => {
   );
   const [moreDetails, setMoreDetails] = useState(null);
   const [typeDetails, setTypeDetails] = useState(null);
+  const [isFlipped, setFlipped] = useState(false);
 
   const dispatch = useDispatch();
 
   const renderTypes = (types) => {
-    // const {types} = selectedPokemon;
-
     return types.map((item, index) => {
       const {
         type: {name},
@@ -157,7 +157,7 @@ const SelectedPokemonBar = React.memo(() => {
   };
 
   const renderPokemonTypes = (option) => {
-    return filterPokemonTypes(option).map((item, index) => {
+    return option.map((item, index) => {
       let typeColor = "";
       switch (item) {
         case "normal":
@@ -217,6 +217,7 @@ const SelectedPokemonBar = React.memo(() => {
         default:
           break;
       }
+
       if (typeColor) {
         return (
           <div
@@ -239,6 +240,27 @@ const SelectedPokemonBar = React.memo(() => {
       } = item;
       return url;
     });
+  };
+
+  const filterDexEntries = () => {
+    const dex = flavor_text_entries.filter((item, index) => {
+      const {
+        language: {name},
+      } = item;
+      return name === "en" && item;
+    });
+    return dex[dex.length - 1].flavor_text;
+  };
+
+  const filterGenera = () => {
+    const genus = genera.filter((item, index) => {
+      const {
+        language: {name},
+        genus,
+      } = item;
+      return name === "en" && genus;
+    })[0].genus;
+    return genus;
   };
 
   useEffect(() => {
@@ -277,6 +299,7 @@ const SelectedPokemonBar = React.memo(() => {
       </div>
     );
   }
+
   if (moreDetails.name !== selectedPokemon.name) {
     return (
       <div className="side">
@@ -297,88 +320,72 @@ const SelectedPokemonBar = React.memo(() => {
 
   const {flavor_text_entries, genera} = moreDetails;
 
-  // console.log(nextPokemon, previousPokemon);
-
-  const filterDexEntries = () => {
-    const dex = flavor_text_entries.filter((item, index) => {
-      const {
-        language: {name},
-      } = item;
-      return name === "en" && item;
-    });
-    return dex[dex.length - 1].flavor_text;
-  };
-
-  const filterGenera = () => {
-    const genus = genera.filter((item, index) => {
-      const {
-        language: {name},
-        genus,
-      } = item;
-      return name === "en" && genus;
-    })[0].genus;
-    return genus;
-  };
+  const {adjustedWeaknesses, adjustedResistances} = adjustTypings(
+    filterPokemonTypes("weak"),
+    filterPokemonTypes("strong"),
+    types
+  );
 
   const pokedexEntry = filterDexEntries();
   const officialArt = other["official-artwork"].front_default;
 
-  // console.log(moreDetails);
-
-  // <div class="card-container">
-  //   <div class="card">
-  //     <div class="card-front">
-  //       <div class="card-content">Front Side</div>
-  //     </div>
-  //     <div class="card-back">
-  //       <div class="card-content">Back Side</div>
-  //     </div>
-  //   </div>
-  // </div>;
-
   return (
     <IconContext.Provider value={{className: "icon"}}>
       <div className="side">
-        {/* <div className="card">
+        <div className={isFlipped ? "card card-flipped" : "card"}>
           <div className="card-front">
-            <div className="card-content"></div>
+            <img
+              loading="lazy"
+              className="sprite-main"
+              src={officialArt}
+              alt={`${name}-sprite`}
+            />
+            <div className="card-content">
+              <p>#{id}</p>
+              <h4>{name}</h4>
+              <p style={{color: "#6e6e6e"}}>{filterGenera()}</p>
+              <div className="type-container">{renderTypes(types)}</div>
+              <div className="pokedex-entry">
+                <h4>Pokédex Entry</h4>
+                <p>{pokedexEntry}</p>
+              </div>
+              <div className="abilites-container">{renderAbilites()}</div>
+              <div className="physique-container">
+                <div className="body-size">
+                  <h4>Height</h4>
+                  <p>{height}m</p>
+                </div>
+                <div className="body-size">
+                  <h4>Weight</h4>
+                  <p>{weight}kg</p>
+                </div>
+              </div>
+              <div className="base-exp">
+                <h4>Base Exp</h4>
+                <p>{base_experience}</p>
+              </div>
+
+              <div className="weakness-container">
+                <h4>Weaknesses</h4>
+                <div className="weakness-types">
+                  {renderPokemonTypes(adjustedWeaknesses)}
+                </div>
+              </div>
+              <div className="resistence-container">
+                <h4>Resistances</h4>
+                <div className="weakness-types">
+                  {renderPokemonTypes(adjustedResistances)}
+                </div>
+              </div>
+            </div>
           </div>
           <div className="card-back">
-            <div className="card-content"></div>
+            <div className="card-content">
+              <div className="stats-container"></div>
+              <div className="evolution-container"></div>
+              <div className="control-container"></div>
+            </div>
           </div>
-        </div> */}
-        <img className="sprite-main" src={officialArt} alt={`${name}-sprite`} />
-        <p>#{id}</p>
-        <h4>{name}</h4>
-        <p style={{color: "#6e6e6e"}}>{filterGenera()}</p>
-        <div className="type-container">{renderTypes(types)}</div>
-        <div className="pokedex-entry">
-          <h4>Pokédex Entry</h4>
-          <p>{pokedexEntry}</p>
-        </div>
-        <div className="abilites-container">{renderAbilites()}</div>
-        <div className="physique-container">
-          <div className="body-size">
-            <h4>Height</h4>
-            <p>{height}m</p>
-          </div>
-          <div className="body-size">
-            <h4>Weight</h4>
-            <p>{weight}kg</p>
-          </div>
-        </div>
-        <div className="base-exp">
-          <h4>Base Exp</h4>
-          <p>{base_experience}</p>
-        </div>
-
-        <div className="weakness-container">
-          <h4>Weaknesses</h4>
-          <div className="weakness-types">{renderPokemonTypes("weak")}</div>
-        </div>
-        <div className="resistence-container">
-          <h4>Resistances</h4>
-          <div className="weakness-types">{renderPokemonTypes("strength")}</div>
         </div>
 
         <span
@@ -400,16 +407,11 @@ const SelectedPokemonBar = React.memo(() => {
         <span
           className="revert-button"
           onClick={() => {
-            // dispatch(handleNextPokemon({x: ""}));
-            console.log("Testing");
+            setFlipped(!isFlipped);
           }}
         >
           <GrRevert />
         </span>
-
-        {/* <div className="stats-container"></div>
-      <div className="evolution-container"></div>
-      <div className="control-container"></div> */}
       </div>
     </IconContext.Provider>
   );
