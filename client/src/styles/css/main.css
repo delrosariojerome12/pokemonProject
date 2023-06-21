@@ -255,7 +255,6 @@ button {
   perspective: 1000px;
   transform-style: preserve-3d;
   transition: transform 0.6s;
-  backface-visibility: hidden;
 }
 .pokedex-container .side .card {
   height: 100%;
@@ -301,6 +300,7 @@ button {
   border-radius: 50%;
   transition: all 0.2s ease-in-out;
   border: solid 2px transparent;
+  z-index: 99;
 }
 .pokedex-container .side .revert-button:hover {
   border-radius: 1rem;
@@ -449,6 +449,9 @@ button {
   top: 0%;
   left: 50%;
   transform: translate(-50%, -50%);
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 .pokedex-container .side .pokedex-entry {
   display: flex;

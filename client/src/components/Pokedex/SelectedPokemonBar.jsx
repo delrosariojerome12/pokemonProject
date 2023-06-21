@@ -282,6 +282,7 @@ const SelectedPokemonBar = React.memo(() => {
 
         setMoreDetails(data);
         setTypeDetails(typeResponses);
+        setFlipped(false);
       } catch (error) {
         console.log(error);
       }
@@ -334,7 +335,6 @@ const SelectedPokemonBar = React.memo(() => {
       <div className={isFlipped ? "side side-flipped" : "side"}>
         <div className={"card"}>
           {/* <div className={isFlipped ? "card card-flipped" : "card"}> */}
-
           <div className="card-front">
             <img
               loading="lazy"
@@ -342,6 +342,14 @@ const SelectedPokemonBar = React.memo(() => {
               src={officialArt}
               alt={`${name}-sprite`}
             />
+            <span
+              className="revert-button"
+              onClick={() => {
+                setFlipped(!isFlipped);
+              }}
+            >
+              <GrRevert />
+            </span>
             <div className="card-content">
               <p>#{id}</p>
               <h4>{name}</h4>
@@ -382,6 +390,14 @@ const SelectedPokemonBar = React.memo(() => {
             </div>
           </div>
           <div className="card-back">
+            <span
+              className="revert-button"
+              onClick={() => {
+                setFlipped(!isFlipped);
+              }}
+            >
+              <GrRevert />
+            </span>
             <div className="card-content">
               <div className="stats-container"></div>
               <div className="evolution-container"></div>
@@ -405,14 +421,6 @@ const SelectedPokemonBar = React.memo(() => {
           }}
         >
           <FaChevronLeft />
-        </span>
-        <span
-          className="revert-button"
-          onClick={() => {
-            setFlipped(!isFlipped);
-          }}
-        >
-          <GrRevert />
         </span>
       </div>
     </IconContext.Provider>
