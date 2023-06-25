@@ -319,7 +319,8 @@ const SelectedPokemonBar = React.memo(() => {
     types,
   } = selectedPokemon;
 
-  const {flavor_text_entries, genera} = moreDetails;
+  const {flavor_text_entries, genera, capture_rate, egg_groups, growth_rate} =
+    moreDetails;
 
   const {adjustedWeaknesses, adjustedResistances} = adjustTypings(
     filterPokemonTypes("weak"),
@@ -330,11 +331,13 @@ const SelectedPokemonBar = React.memo(() => {
   const pokedexEntry = filterDexEntries();
   const officialArt = other["official-artwork"].front_default;
 
+  console.log(moreDetails);
+  console.log(selectedPokemon);
+
   return (
     <IconContext.Provider value={{className: "icon"}}>
       <div className={isFlipped ? "side side-flipped" : "side"}>
         <div className={"card"}>
-          {/* <div className={isFlipped ? "card card-flipped" : "card"}> */}
           <div className="card-front">
             <img
               loading="lazy"
@@ -399,6 +402,21 @@ const SelectedPokemonBar = React.memo(() => {
               <GrRevert />
             </span>
             <div className="card-content">
+              <div className="misc-container">
+                <div className="catch-rate">
+                  <p>Catch Rate:</p>
+                  <h4>{capture_rate}</h4>
+                </div>
+                <div className="gender-ratio">
+                  <p>Gender Ratio</p>
+                  <h4></h4>
+                </div>
+                <div className="leveling-rate">
+                  <p>Leveling Rate:</p>
+                  <h4>{growth_rate.name}</h4>
+                </div>
+              </div>
+              <div className="sprites-container"></div>
               <div className="stats-container"></div>
               <div className="evolution-container"></div>
               <div className="control-container"></div>
