@@ -8,6 +8,9 @@ const initialState = {
   pokemonList: null,
   isLoading: false,
   isError: false,
+  nextLink: null,
+  isLoadMoreLoading: false,
+  isLoadMoreLoadingError: false,
 };
 
 export const getPokemonOnload = createAsyncThunk(
@@ -16,6 +19,7 @@ export const getPokemonOnload = createAsyncThunk(
     try {
       const url = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20";
       const {data: res} = await axios.get(url);
+
       return res;
     } catch (error) {
       console.log(error);
@@ -55,6 +59,31 @@ export const handlePreviousPokemon = createAsyncThunk(
     }
   }
 );
+export const searchPokemonByName = createAsyncThunk(
+  "/pokemon/searchByName",
+  async ({pokemonName}, {rejectWithValue}) => {
+    try {
+      const url = `https://pokeapi.co/api/v2/ability/${pokemonName}/`;
+      console.log(url);
+    } catch (error) {
+      console.log(error);
+      rejectWithValue(error);
+    }
+  }
+);
+export const loadMorePokemon = createAsyncThunk(
+  "/pokemon/loadMorePokemon",
+  async ({nextLink}, {rejectWithValue}) => {
+    try {
+      const url = `${nextLink}`;
+      const {data: res} = await axios.get(url);
+      return res;
+    } catch (error) {
+      console.log(error);
+      rejectWithValue(error);
+    }
+  }
+);
 
 export const pokedexReducer = createSlice({
   name: "pokedex-reducer",
@@ -73,8 +102,9 @@ export const pokedexReducer = createSlice({
         state.isLoading = true;
       })
       .addCase(getPokemonOnload.fulfilled, (state, action) => {
-        const {results} = action.payload;
+        const {results, next} = action.payload;
         state.isLoading = false;
+        state.nextLink = next;
         state.isError = false;
         state.pokemonList = results;
       })
@@ -82,7 +112,6 @@ export const pokedexReducer = createSlice({
         state.isLoading = false;
         state.isError = true;
       });
-    // next
     builder
       .addCase(handleNextPokemon.pending, (state, action) => {
         // state.isLoading = true;
@@ -99,7 +128,6 @@ export const pokedexReducer = createSlice({
         // state.isLoading = false;
         // state.isError = true;
       });
-    // previousPokemon
     builder
       .addCase(handlePreviousPokemon.pending, (state, action) => {
         // state.isLoading = true;
@@ -115,6 +143,27 @@ export const pokedexReducer = createSlice({
       .addCase(handlePreviousPokemon.rejected, (state, action) => {
         // state.isLoading = false;
         // state.isError = true;
+      });
+    builder
+      .addCase(searchPokemonByName.pending, (state, action) => {})
+      .addCase(searchPokemonByName.fulfilled, (state, action) => {})
+      .addCase(searchPokemonByName.rejected, (state, action) => {});
+    builder
+      .addCase(loadMorePokemon.pending, (state, action) => {
+        state.isLoadMoreLoading = true;
+        state.isLoadMoreLoadingError = false;
+        // state.nextLink =
+      })
+      .addCase(loadMorePokemon.fulfilled, (state, action) => {
+        const {next, results} = action.payload;
+        state.isLoadMoreLoading = false;
+        state.isLoadMoreLoadingError = false;
+        state.nextLink = next;
+        state.pokemonList = [...state.pokemonList, ...results];
+      })
+      .addCase(loadMorePokemon.rejected, (state, action) => {
+        state.isLoadMoreLoading = false;
+        state.isLoadMoreLoadingError = true;
       });
   },
 });

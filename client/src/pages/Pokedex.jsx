@@ -1,13 +1,26 @@
 import React, {useEffect, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {getPokemonOnload} from "../features/pokedexReducer";
+import {
+  getPokemonOnload,
+  searchPokemonByName,
+  loadMorePokemon,
+} from "../features/pokedexReducer";
 import PokedexCard from "../components/Pokedex/PokedexCard";
 import SelectedPokemonBar from "../components/Pokedex/SelectedPokemonBar";
+import PokeballLogo from "../assets/pokeball-png.png";
+import {debounce} from "lodash";
+import Loading from "../components/Loading/Loading";
+import ErrorPage from "./ErrorPage";
 
 const Pokedex = React.memo(() => {
-  const {isLoading, isError, pokemonList} = useSelector(
-    (state) => state.pokedex
-  );
+  const {
+    isLoading,
+    isError,
+    pokemonList,
+    nextLink,
+    isLoadMoreLoading,
+    isLoadMoreError,
+  } = useSelector((state) => state.pokedex);
   const dispatch = useDispatch();
   const [searchPokemon, setSearchPokemon] = useState("");
 
@@ -21,21 +34,11 @@ const Pokedex = React.memo(() => {
     dispatch(getPokemonOnload({x: ""}));
   }, []);
 
-  // console.log(pokemonList);
-
   if (isLoading || !pokemonList) {
-    return (
-      <div>
-        <h1>Loading...</h1>
-      </div>
-    );
+    return <Loading />;
   }
   if (isError) {
-    return (
-      <div>
-        <h1>ERROR</h1>
-      </div>
-    );
+    return <ErrorPage />;
   }
 
   return (
@@ -45,13 +48,24 @@ const Pokedex = React.memo(() => {
         <input
           type="text"
           value={searchPokemon}
+          placeholder="Search Pokemon"
           onChange={(e) => {
             setSearchPokemon(e.target.value);
           }}
         />
+        <img src={PokeballLogo} alt="pokeball-logo" className="pokeball-logo" />
       </div>
-      <div className="filter-container"></div>
-      <div className="middle">{renderPokemon()}</div>
+      <div className="middle">
+        <div className="pokecard-con">{renderPokemon()}</div>
+        <button
+          onClick={() => {
+            dispatch(loadMorePokemon({nextLink}));
+          }}
+          className="load-btn"
+        >
+          {isLoadMoreLoading ? "Loading Pokemon..." : "Load More"}
+        </button>
+      </div>
       <SelectedPokemonBar />
     </section>
   );

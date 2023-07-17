@@ -2,7 +2,6 @@
 
 .pokedex-container {
   display: grid;
-  //   grid-template-rows: 5rem 8rem 6rem 1fr;
   grid-template-rows: 5vh 8vh 6vh 74vh;
   grid-template-columns: 35rem 1fr;
   gap: 1rem;
@@ -32,6 +31,26 @@
     height: 8rem;
     grid-row: 2/3;
     grid-column: 2/3;
+    position: relative;
+
+    input {
+      border-radius: 1rem;
+      padding: 2rem 10rem 2rem 2rem;
+      outline: none;
+      font-size: 1.8rem;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .pokeball-logo {
+      height: 7rem;
+      width: 7rem;
+      position: absolute;
+      top: 50%;
+      right: 2rem;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
   }
   .filter-container {
     height: 6rem;
@@ -300,17 +319,39 @@
     transform: rotateY(180deg);
   }
   .middle {
-    grid-row: 4/5;
+    grid-row: 3/5;
     grid-column: 2/3;
     overflow-y: auto;
-    padding: 4rem 1.5rem 1.5rem 1.5rem;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(auto, 23rem));
-    row-gap: 4rem;
-    column-gap: 3rem;
-    // border: solid 1px #ccc;
-    border-radius: 1rem;
-    justify-content: center;
+    .load-btn {
+      border-radius: 1rem;
+      border: solid 2px transparent;
+      outline: none;
+      background-color: #333232;
+      margin: auto;
+      padding: 1rem 2rem;
+      color: #fff;
+      height: 4rem;
+      font-weight: 600;
+      transition: all 0.3s ease-in-out;
+      &:hover {
+        border: solid 2px #333232;
+        background-color: transparent;
+        color: #333232;
+        font-weight: 600;
+      }
+    }
+
+    .pokecard-con {
+      padding: 4rem 1.5rem 1.5rem 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(auto, 23rem));
+      row-gap: 4rem;
+      column-gap: 3rem;
+      // border: solid 1px #ccc;
+      border-radius: 1rem;
+      justify-content: center;
+    }
     .pokemon-card {
       margin: auto;
       border-radius: 2rem;

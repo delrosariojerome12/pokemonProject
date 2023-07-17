@@ -4,7 +4,8 @@ import {BsPeopleFill} from "react-icons/bs";
 import {TbPokeball} from "react-icons/tb";
 import {FaShoppingCart, FaUserAlt, FaHome} from "react-icons/fa";
 import {RiSwordFill} from "react-icons/ri";
-import PokemonLogo from "/assets/pokemon-logo.png";
+// import PokemonLogo from "./assets/pokemon-logo.png";
+import PokemonLogo from "../assets/pokemon-logo.png";
 
 const links = [
   {
