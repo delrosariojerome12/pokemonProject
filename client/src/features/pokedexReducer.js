@@ -11,6 +11,9 @@ const initialState = {
   nextLink: null,
   isLoadMoreLoading: false,
   isLoadMoreLoadingError: false,
+  isSearchLoading: true,
+  isSearchError: false,
+  searchedPokemon: null,
 };
 
 export const getPokemonOnload = createAsyncThunk(
@@ -62,12 +65,14 @@ export const handlePreviousPokemon = createAsyncThunk(
 export const searchPokemonByName = createAsyncThunk(
   "/pokemon/searchByName",
   async ({pokemonName}, {rejectWithValue}) => {
+    console.log(pokemonName);
     try {
-      const url = `https://pokeapi.co/api/v2/ability/${pokemonName}/`;
-      console.log(url);
+      const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}/`;
+      const {data: res} = await axios.get(url);
+      return res;
     } catch (error) {
       console.log(error);
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -145,9 +150,20 @@ export const pokedexReducer = createSlice({
         // state.isError = true;
       });
     builder
-      .addCase(searchPokemonByName.pending, (state, action) => {})
-      .addCase(searchPokemonByName.fulfilled, (state, action) => {})
-      .addCase(searchPokemonByName.rejected, (state, action) => {});
+      .addCase(searchPokemonByName.pending, (state, action) => {
+        state.isSearchLoading = true;
+        state.isSearchError = false;
+      })
+      .addCase(searchPokemonByName.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.isSearchLoading = false;
+        state.isSearchError = false;
+        state.searchedPokemon = action.payload;
+      })
+      .addCase(searchPokemonByName.rejected, (state, action) => {
+        state.isSearchLoading = false;
+        state.isSearchError = true;
+      });
     builder
       .addCase(loadMorePokemon.pending, (state, action) => {
         state.isLoadMoreLoading = true;

@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../components/Landing/Navbar";
 import Sidebar from "../components/Landing/Sidebar";
-import LandingPokemon from "/assets/landing-pokemon.jpg";
+import LandingPokemon from "../assets/landing-pokemon.jpg";
 
 import {IconContext} from "react-icons/lib";
 const LandingPage = React.memo(() => {
