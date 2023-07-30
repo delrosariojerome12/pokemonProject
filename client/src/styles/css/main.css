@@ -267,6 +267,17 @@ button {
 .pokedex-container .search-container .reversed {
   transform: rotate(90deg);
 }
+.pokedex-container .search-container .loading {
+  animation: rotation 1s infinite ease-in-out;
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .pokedex-container .filter-container {
   height: 6rem;
   grid-column: 2/3;
@@ -518,6 +529,11 @@ button {
   grid-column: 2/3;
   overflow-y: auto;
   display: grid;
+}
+.pokedex-container .middle .no-found-message {
+  margin: 0 auto;
+  color: #f03a0d;
+  font-weight: 600;
 }
 .pokedex-container .middle .load-btn {
   border-radius: 1rem;

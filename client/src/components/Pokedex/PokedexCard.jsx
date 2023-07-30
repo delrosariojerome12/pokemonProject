@@ -141,7 +141,9 @@ const PokedexCard = React.memo(({pokemon}) => {
       className={
         selectedPokemon?.id === id ? "pokemon-card selected" : "pokemon-card"
       }
-      onClick={() => dispatch(handleSelectPokemon(pokemonData))}
+      onClick={() => {
+        dispatch(handleSelectPokemon(pokemonData));
+      }}
     >
       <p>#{id}</p>
       <img className="sprite" src={frontSprite} alt={`${name} sprite`} />

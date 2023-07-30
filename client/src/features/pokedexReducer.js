@@ -11,9 +11,10 @@ const initialState = {
   nextLink: null,
   isLoadMoreLoading: false,
   isLoadMoreLoadingError: false,
-  isSearchLoading: true,
+  isSearchLoading: false,
   isSearchError: false,
   searchedPokemon: null,
+  previousPokemonSearch: null,
 };
 
 export const getPokemonOnload = createAsyncThunk(
@@ -23,7 +24,11 @@ export const getPokemonOnload = createAsyncThunk(
       const url = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20";
       const {data: res} = await axios.get(url);
 
-      return res;
+      const bulbasaurURL = `https://pokeapi.co/api/v2/pokemon/bulbasaur`;
+      const {data: bulbasaurData} = await axios.get(bulbasaurURL);
+
+      // return res;
+      return {res, bulbasaurData};
     } catch (error) {
       console.log(error);
       return rejectWithValue(error);
@@ -65,9 +70,8 @@ export const handlePreviousPokemon = createAsyncThunk(
 export const searchPokemonByName = createAsyncThunk(
   "/pokemon/searchByName",
   async ({pokemonName}, {rejectWithValue}) => {
-    console.log(pokemonName);
     try {
-      const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}/`;
+      const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}/`;
       const {data: res} = await axios.get(url);
       return res;
     } catch (error) {
@@ -107,11 +111,17 @@ export const pokedexReducer = createSlice({
         state.isLoading = true;
       })
       .addCase(getPokemonOnload.fulfilled, (state, action) => {
-        const {results, next} = action.payload;
+        const {
+          res: {results, next},
+          bulbasaurData,
+        } = action.payload;
+        // const {results, next} = action.payload;
         state.isLoading = false;
         state.nextLink = next;
         state.isError = false;
+        console.log(results);
         state.pokemonList = results;
+        state.selectedPokemon = bulbasaurData;
       })
       .addCase(getPokemonOnload.rejected, (state, action) => {
         state.isLoading = false;
@@ -155,12 +165,13 @@ export const pokedexReducer = createSlice({
         state.isSearchError = false;
       })
       .addCase(searchPokemonByName.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.isSearchLoading = false;
         state.isSearchError = false;
         state.searchedPokemon = action.payload;
+        state.selectedPokemon = action.payload;
       })
       .addCase(searchPokemonByName.rejected, (state, action) => {
+        console.log(action.payload);
         state.isSearchLoading = false;
         state.isSearchError = true;
       });

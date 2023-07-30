@@ -331,8 +331,8 @@ const SelectedPokemonBar = React.memo(() => {
   const pokedexEntry = filterDexEntries();
   const officialArt = other["official-artwork"].front_default;
 
-  console.log(moreDetails);
-  console.log(selectedPokemon);
+  // console.log(moreDetails);
+  // console.log(selectedPokemon);
 
   return (
     <IconContext.Provider value={{className: "icon"}}>

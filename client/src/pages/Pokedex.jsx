@@ -50,6 +50,10 @@ const Pokedex = React.memo(() => {
     // }
   };
 
+  const handleClearSearch = () => {
+    setSearchPokemon("");
+  };
+
   useEffect(() => {
     if (pokemonList === null) {
       dispatch(getPokemonOnload({x: ""}));
@@ -97,6 +101,15 @@ const Pokedex = React.memo(() => {
     );
   }
 
+  const checkRotation = () => {
+    if (isEntered && searchPokemon.length > 2) {
+      return "pokeball-logo loading";
+    } else if (isLoadMoreLoading) {
+      return "pokeball-logo loading";
+    } else {
+      return "pokeball-logo";
+    }
+  };
   return (
     <section className="pokedex-container">
       <header className="pokedex-header"></header>
@@ -112,14 +125,22 @@ const Pokedex = React.memo(() => {
         <img
           src={BlackWhiteBall}
           alt="pokeball-logo"
-          className={
-            isEntered && searchPokemon.length > 2
-              ? "pokeball-logo reversed"
-              : "pokeball-logo"
-          }
+          // className={
+          //   isEntered && searchPokemon.length > 2
+          //     ? "pokeball-logo reversed"
+          //       ? isLoadMoreLoading
+          //       : "pokeball-logo loading"
+          //     : "pokeball-logo"
+          // }
+          className={checkRotation()}
         />
       </div>
       <div className="middle">
+        {isSearchError && (
+          <div className="no-found-message">
+            <p>No Pokemon Match found for: {searchPokemon}</p>
+          </div>
+        )}
         <div className="pokecard-con">{renderPokemon()}</div>
         <button
           onClick={() => {

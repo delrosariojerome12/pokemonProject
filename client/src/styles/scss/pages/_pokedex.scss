@@ -60,6 +60,17 @@
     .reversed {
       transform: rotate(90deg);
     }
+    .loading {
+      animation: rotation 1s infinite ease-in-out;
+    }
+    @keyframes rotation {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
   }
   .filter-container {
     height: 6rem;
@@ -332,6 +343,12 @@
     grid-column: 2/3;
     overflow-y: auto;
     display: grid;
+
+    .no-found-message {
+      margin: 0 auto;
+      color: #f03a0d;
+      font-weight: 600;
+    }
     .load-btn {
       border-radius: 1rem;
       border: solid 2px transparent;
