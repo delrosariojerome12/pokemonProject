@@ -4,6 +4,7 @@ import {
   getPokemonOnload,
   searchPokemonByName,
   loadMorePokemon,
+  handleSearchReset,
 } from "../features/pokedexReducer";
 import PokedexCard from "../components/Pokedex/PokedexCard";
 import SelectedPokemonBar from "../components/Pokedex/SelectedPokemonBar";
@@ -26,6 +27,7 @@ const Pokedex = React.memo(() => {
     isSearchLoading,
     isSearchError,
     searchedPokemon,
+    isSearching,
   } = useSelector((state) => state.pokedex);
   const dispatch = useDispatch();
   const [searchPokemon, setSearchPokemon] = useState("");
@@ -50,16 +52,14 @@ const Pokedex = React.memo(() => {
     // }
   };
 
-  const handleClearSearch = () => {
-    setSearchPokemon("");
-  };
-
   useEffect(() => {
     if (pokemonList === null) {
       dispatch(getPokemonOnload({x: ""}));
     } else {
-      if (searchPokemon.length < 2) {
+      if (searchPokemon.length === 0) {
         setIsEnter(false);
+        // dispatch(handleSearchReset());
+        // dispatch(getPokemonOnload({x: ""}));
       }
     }
   }, [searchPokemon]);
@@ -143,14 +143,17 @@ const Pokedex = React.memo(() => {
           </div>
         )}
         <div className="pokecard-con">{renderPokemon()}</div>
-        <button
-          onClick={() => {
-            dispatch(loadMorePokemon({nextLink}));
-          }}
-          className="load-btn"
-        >
-          {isLoadMoreLoading ? "Loading Pokemon..." : "Load More"}
-        </button>
+
+        {!isSearching && (
+          <button
+            onClick={() => {
+              dispatch(loadMorePokemon({nextLink}));
+            }}
+            className="load-btn"
+          >
+            {isLoadMoreLoading ? "Loading Pokemon..." : "Load More"}
+          </button>
+        )}
       </div>
       <SelectedPokemonBar />
     </section>

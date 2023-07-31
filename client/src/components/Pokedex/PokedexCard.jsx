@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {handleSelectPokemon} from "../../features/pokedexReducer";
 import {useDispatch, useSelector} from "react-redux";
+import NoSprite from "../../assets/question-sprite.png";
 
 const PokedexCard = React.memo(({pokemon}) => {
   const {selectedPokemon} = useSelector((state) => state.pokedex);
@@ -127,14 +128,18 @@ const PokedexCard = React.memo(({pokemon}) => {
   }
 
   const {
-    sprites: {versions},
+    sprites: {versions, front_default},
     id,
     name,
   } = pokemonData;
 
   const animatedSprite = versions["generation-v"]["black-white"].animated;
-  const frontSprite = animatedSprite.front_default;
+  const frontSprite = animatedSprite.front_default || front_default || NoSprite;
   const backSprite = animatedSprite.back_default;
+
+  // console.log(pokemonData);
+  // console.log(frontSprite);
+  // console.log(front_default);
 
   return (
     <div
@@ -143,7 +148,6 @@ const PokedexCard = React.memo(({pokemon}) => {
       }
       onClick={() => {
         dispatch(handleSelectPokemon(pokemonData));
-        console.log(pokemonData);
       }}
     >
       <p>#{id}</p>

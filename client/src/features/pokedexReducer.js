@@ -15,6 +15,7 @@ const initialState = {
   isSearchError: false,
   searchedPokemon: null,
   previousPokemonSearch: null,
+  isSearching: false,
 };
 
 export const getPokemonOnload = createAsyncThunk(
@@ -101,11 +102,12 @@ export const pokedexReducer = createSlice({
   reducers: {
     handleSelectPokemon: (state, action) => {
       const {id} = action.payload;
-
-      console.log(action.payload);
       state.selectedPokemon = action.payload;
       state.nextPokemon = id + 1;
       state.previousPokemon = id === 1 ? id : id - 1;
+    },
+    handleSearchReset: (state, action) => {
+      state.isSearching = false;
     },
   },
   extraReducers: (builder) => {
@@ -118,13 +120,17 @@ export const pokedexReducer = createSlice({
           res: {results, next},
           bulbasaurData,
         } = action.payload;
-        // const {results, next} = action.payload;
+        const {id} = bulbasaurData;
+
         state.isLoading = false;
         state.nextLink = next;
         state.isError = false;
         console.log(results);
         state.pokemonList = results;
         state.selectedPokemon = bulbasaurData;
+
+        state.nextPokemon = id + 1;
+        state.previousPokemon = id === 1 ? id : id - 1;
       })
       .addCase(getPokemonOnload.rejected, (state, action) => {
         state.isLoading = false;
@@ -171,10 +177,7 @@ export const pokedexReducer = createSlice({
         const {res: baseData, otherData: speciesData} = action.payload;
         const {id} = baseData;
         const {varieties} = speciesData;
-
         const varietiesList = varieties.map((item) => item.pokemon);
-
-        console.log(varietiesList);
 
         state.isSearchLoading = false;
         state.isSearchError = false;
@@ -183,6 +186,7 @@ export const pokedexReducer = createSlice({
         state.nextPokemon = id + 1;
         state.previousPokemon = id === 1 ? id : id - 1;
         state.pokemonList = varietiesList;
+        state.isSearching = true;
       })
       .addCase(searchPokemonByName.rejected, (state, action) => {
         console.log(action.payload);
@@ -209,6 +213,6 @@ export const pokedexReducer = createSlice({
   },
 });
 
-export const {handleSelectPokemon} = pokedexReducer.actions;
+export const {handleSelectPokemon, handleSearchReset} = pokedexReducer.actions;
 
 export default pokedexReducer.reducer;

@@ -293,6 +293,10 @@ const SelectedPokemonBar = React.memo(() => {
     }
   }, [selectedPokemon]);
 
+  // console.log(selectedPokemon);
+  // console.log(moreDetails);
+  // console.log(typeDetails);
+
   if (!selectedPokemon || !moreDetails || !typeDetails) {
     return (
       <div className="side">
@@ -301,7 +305,13 @@ const SelectedPokemonBar = React.memo(() => {
     );
   }
 
-  if (moreDetails.name !== selectedPokemon.name) {
+  // console.log(selectedPokemon.id);
+  // console.log(moreDetails.id);
+
+  // console.log(moreDetails);
+  // console.log(selectedPokemon);
+
+  if (moreDetails.id !== selectedPokemon.id && selectedPokemon.is_default) {
     return (
       <div className="side">
         <LoadingPokemon />
