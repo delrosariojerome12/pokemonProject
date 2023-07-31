@@ -110,6 +110,7 @@ const Pokedex = React.memo(() => {
       return "pokeball-logo";
     }
   };
+
   return (
     <section className="pokedex-container">
       <header className="pokedex-header"></header>

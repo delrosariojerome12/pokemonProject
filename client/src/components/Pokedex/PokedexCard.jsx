@@ -143,6 +143,7 @@ const PokedexCard = React.memo(({pokemon}) => {
       }
       onClick={() => {
         dispatch(handleSelectPokemon(pokemonData));
+        console.log(pokemonData);
       }}
     >
       <p>#{id}</p>

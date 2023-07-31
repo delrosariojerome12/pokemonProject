@@ -73,7 +73,8 @@ export const searchPokemonByName = createAsyncThunk(
     try {
       const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}/`;
       const {data: res} = await axios.get(url);
-      return res;
+      const {data: otherData} = await axios.get(res.species.url);
+      return {res, otherData};
     } catch (error) {
       console.log(error);
       return rejectWithValue(error);
@@ -100,6 +101,8 @@ export const pokedexReducer = createSlice({
   reducers: {
     handleSelectPokemon: (state, action) => {
       const {id} = action.payload;
+
+      console.log(action.payload);
       state.selectedPokemon = action.payload;
       state.nextPokemon = id + 1;
       state.previousPokemon = id === 1 ? id : id - 1;
@@ -165,10 +168,21 @@ export const pokedexReducer = createSlice({
         state.isSearchError = false;
       })
       .addCase(searchPokemonByName.fulfilled, (state, action) => {
+        const {res: baseData, otherData: speciesData} = action.payload;
+        const {id} = baseData;
+        const {varieties} = speciesData;
+
+        const varietiesList = varieties.map((item) => item.pokemon);
+
+        console.log(varietiesList);
+
         state.isSearchLoading = false;
         state.isSearchError = false;
-        state.searchedPokemon = action.payload;
-        state.selectedPokemon = action.payload;
+        state.searchedPokemon = baseData;
+        state.selectedPokemon = baseData;
+        state.nextPokemon = id + 1;
+        state.previousPokemon = id === 1 ? id : id - 1;
+        state.pokemonList = varietiesList;
       })
       .addCase(searchPokemonByName.rejected, (state, action) => {
         console.log(action.payload);
