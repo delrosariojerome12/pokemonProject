@@ -31,7 +31,6 @@ button {
 
 .container {
   height: 100vh;
-  width: 100vw;
 }
 
 .loading-pokemon {
@@ -209,8 +208,9 @@ button {
 }
 
 .pokedex-container {
+  height: 100%;
   display: grid;
-  grid-template-rows: 5vh 8vh 6vh 74vh;
+  grid-template-rows: 5vh 8vh 6vh auto;
   grid-template-columns: 35rem 1fr;
   gap: 1rem;
   padding: 2rem;
@@ -534,6 +534,11 @@ button {
   margin: 0 auto;
   color: #f03a0d;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  letter-spacing: 0.2rem;
 }
 .pokedex-container .middle .load-btn {
   border-radius: 1rem;
@@ -562,6 +567,17 @@ button {
        column-gap: 3rem;
   border-radius: 1rem;
   justify-content: center;
+}
+.pokedex-container .middle .pokecard-con-searching {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3rem;
+  border-radius: 1rem;
+  padding: 4rem 1.5rem 1.5rem 1.5rem;
+}
+.pokedex-container .middle .pokecard-con-searching .pokemon-card {
+  margin: 0;
 }
 .pokedex-container .middle .pokemon-card {
   margin: auto;
@@ -609,6 +625,9 @@ button {
 .pokedex-container .middle .selected {
   background-color: #9e9e9e;
   color: #fff;
+}
+.pokedex-container .searching-mode {
+  grid-template-rows: 5rem auto;
 }
 .pokedex-container .loader {
   justify-content: center;

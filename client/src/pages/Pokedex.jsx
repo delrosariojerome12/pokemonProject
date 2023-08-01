@@ -126,23 +126,20 @@ const Pokedex = React.memo(() => {
         <img
           src={BlackWhiteBall}
           alt="pokeball-logo"
-          // className={
-          //   isEntered && searchPokemon.length > 2
-          //     ? "pokeball-logo reversed"
-          //       ? isLoadMoreLoading
-          //       : "pokeball-logo loading"
-          //     : "pokeball-logo"
-          // }
           className={checkRotation()}
         />
       </div>
-      <div className="middle">
+      <div className={isSearching ? "middle searching-mode" : "middle"}>
         {isSearchError && (
           <div className="no-found-message">
             <p>No Pokemon Match found for: {searchPokemon}</p>
           </div>
         )}
-        <div className="pokecard-con">{renderPokemon()}</div>
+        <div
+          className={isSearching ? "pokecard-con-searching" : "pokecard-con"}
+        >
+          {renderPokemon()}
+        </div>
 
         {!isSearching && (
           <button

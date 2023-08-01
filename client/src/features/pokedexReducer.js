@@ -179,6 +179,8 @@ export const pokedexReducer = createSlice({
         const {varieties} = speciesData;
         const varietiesList = varieties.map((item) => item.pokemon);
 
+        console.log(baseData);
+
         state.isSearchLoading = false;
         state.isSearchError = false;
         state.searchedPokemon = baseData;
