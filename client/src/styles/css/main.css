@@ -163,6 +163,7 @@ button {
   grid-template-columns: 22rem 1fr;
 }
 .client .sidebar-client {
+  height: 100vh;
   display: grid;
   grid-template-rows: 20% 50%;
   gap: 1rem;
@@ -208,9 +209,8 @@ button {
 }
 
 .pokedex-container {
-  height: 100%;
   display: grid;
-  grid-template-rows: 5vh 8vh 6vh auto;
+  grid-template-rows: 5vh 8vh 6vh 73.5vh;
   grid-template-columns: 35rem 1fr;
   gap: 1rem;
   padding: 2rem;
@@ -524,8 +524,24 @@ button {
 .pokedex-container .side-flipped {
   transform: rotateY(180deg);
 }
+.pokedex-container .advanced-search {
+  grid-row: 3/4;
+  grid-column: 2/3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: 1rem;
+  cursor: pointer;
+  z-index: 3;
+  transition: all 0.2s ease-in-out;
+  height: 100%;
+}
+.pokedex-container .open {
+  height: 81vh;
+}
 .pokedex-container .middle {
-  grid-row: 3/5;
+  grid-row: 4/5;
   grid-column: 2/3;
   overflow-y: auto;
   display: grid;
@@ -559,7 +575,7 @@ button {
   font-weight: 600;
 }
 .pokedex-container .middle .pokecard-con {
-  padding: 4rem 1.5rem 1.5rem 1.5rem;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(auto, 23rem));
   row-gap: 4rem;

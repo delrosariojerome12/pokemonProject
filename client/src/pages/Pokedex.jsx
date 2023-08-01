@@ -8,13 +8,11 @@ import {
 } from "../features/pokedexReducer";
 import PokedexCard from "../components/Pokedex/PokedexCard";
 import SelectedPokemonBar from "../components/Pokedex/SelectedPokemonBar";
-import PokeballLogo from "../assets/pokeball-png.png";
 import Loading from "../components/Loading/Loading";
 import ErrorPage from "./ErrorPage";
-import PokeballOpen from "../assets/open-pokeball.png";
-// import BlackWhiteBall from "../assets/black-white-ball.png";
 import BlackWhiteBall from "../assets/black-white-ball.svg";
 import LoadingPokemon from "../components/LoadingPokemon";
+import AdvancedSearch from "../components/Pokedex/AdvancedSearch";
 
 const Pokedex = React.memo(() => {
   const {
@@ -47,9 +45,6 @@ const Pokedex = React.memo(() => {
       setIsEnter(true);
       dispatch(searchPokemonByName({pokemonName: searchPokemon}));
     }
-    // if (e.key === "Backspace" && searchPokemon.length <= 2) {
-    //   setIsEnter(false);
-    // }
   };
 
   useEffect(() => {
@@ -58,8 +53,6 @@ const Pokedex = React.memo(() => {
     } else {
       if (searchPokemon.length === 0) {
         setIsEnter(false);
-        // dispatch(handleSearchReset());
-        // dispatch(getPokemonOnload({x: ""}));
       }
     }
   }, [searchPokemon]);
@@ -93,6 +86,7 @@ const Pokedex = React.memo(() => {
             }
           />
         </div>
+        <AdvancedSearch />
         <div className="middle loader">
           <LoadingPokemon />
         </div>
@@ -129,6 +123,7 @@ const Pokedex = React.memo(() => {
           className={checkRotation()}
         />
       </div>
+      <AdvancedSearch />
       <div className={isSearching ? "middle searching-mode" : "middle"}>
         {isSearchError && (
           <div className="no-found-message">
